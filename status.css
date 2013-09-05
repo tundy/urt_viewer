@@ -1,0 +1,10 @@
+.statusbanner{
+	font-family: Arial;
+	font-size:9px;
+	background-color:#5d0805;
+	border-color:#ab0f09;
+	border:1 bold; 
+	color:white;
+	text-align:left;
+	background: rgba(93, 8, 5, 0.1)
+}
