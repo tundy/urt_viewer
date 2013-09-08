@@ -6,7 +6,7 @@ $players = array 			## Define players Array Keys
 	2 => "Nick",
 );
 
-$error = "0";				## set no errors
+$error = 0;				## set no errors
 $players = array();			## Clear $players
 
 $DataFile = @fopen("$ip%$port.data", "r");		## Open Data File with last updated server's infos
@@ -57,7 +57,7 @@ $cvars = (substr_count("$f_cvars","\\"));	## Get number of Cvars
 unset($f_cvars);							## Unset $f_cvars
 
 ### Start ### Chagning $cvar[] to $cvar["KEY"] alphabetically
-if ($error == "0")								## Do it only if is everything OK
+if ($error == 0)								## Do it only if is everything OK
 {
 	$i = 1;
 	while ($i < $cvars):						## new $cvar's "KEY" is equal to old $cvar[$i]
@@ -72,7 +72,7 @@ if ($error == "0")								## Do it only if is everything OK
 }
 ### End ### Chagning $cvar[] to $cvar["KEY"] alphabetically
 
-if ($error == "0")										## Do it only if is everything OK
+if ($error == 0)										## Do it only if is everything OK
 {
 	if (isset($cvar["sv_hostname"]))					## Exist this variable ?
 	{
@@ -131,35 +131,24 @@ if ($error == "0")										## Do it only if is everything OK
 	}
 
 	$dir = 'levelshots';								## Directory with LevelShots
-	if (false == ($images = scandir($dir)))				## Try to Scan LevelShots
-		$error  = "Error: Failed to scandir($dir).";	## Scan Failed
+	
+	if ( file_exists($dir . "/" . $cvar["mapname"] . ".png") )
+		$mapimage = $cvar["mapname"] . ".png";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".jpg") )
+		$mapimage = $cvar["mapname"] . ".jpg";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".gif") )
+		$mapimage = $cvar["mapname"] . ".gif";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".bmp") )
+		$mapimage = $cvar["mapname"] . ".bmp";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".tga") )
+		$mapimage = $cvar["mapname"] . ".tga";
 	else
-		{
-		$mapimage = "no.png";							## If there will be no match image will be no.png
-			foreach ($images as $image) {				## Check Every File in Folder
-				switch ($image):
-					case $cvar["mapname"] . ".tga":
-						$mapimage = $cvar["mapname"] . ".tga";	break;
-					case $cvar["mapname"] . ".bmp":
-						$mapimage = $cvar["mapname"] . ".bmp";	break;
-					case $cvar["mapname"] . ".gif":
-						$mapimage = $cvar["mapname"] . ".gif";	break;
-					case $cvar["mapname"] . ".jpg":
-						$mapimage = $cvar["mapname"] . ".jpg";	break;
-					case $cvar["mapname"] . ".png":
-						$mapimage = $cvar["mapname"] . ".png";	break 1;	## If png found break foreach !
-					default:
-					break;
-				endswitch;
-			}
-		unset($images);
-		unset($image);
-		}
+		$mapimage = "no.png";	
 	unset($dir);
 	$slots = $o_playerss . " / " . ($cvar["sv_maxclients"]-$cvar["sv_privateClients"]) . " + " . $cvar["sv_privateClients"];
 }
 
-if ($error !== "0")
+if ($error != 0)
 	{
 	$sv_hostname = "<span style='font-size:16px ;color:red'>OFFLINE</span>";
 	$cvar["g_modversion"] = " ";
