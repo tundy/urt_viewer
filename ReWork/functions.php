@@ -36,7 +36,7 @@ function stripcolors ($result)
 function cmd ($cmd, $ip, $port = 27960)											## Send command to the server					//:SVK: Odosle prikaz na server
 {
 	$timeout = 1;
-	$cmd = "ÿÿÿÿ".$cmd;
+	$cmd = chr(255).chr(255).chr(255).chr(255).$cmd;
 	$errno = $errstr = null;
 	$server = fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
 	if (!$server)
@@ -47,7 +47,13 @@ function cmd ($cmd, $ip, $port = 27960)											## Send command to the server	
 	while ($d = fread ($server, 10000))
 		$data .= $d;
 	fclose ($server);
-	return $data;
+	if ( empty($data) )
+	{
+		echo("No answer from [ $ip : $port ] !! \r\n");
+		return "No answer from server !!";
+	}
+	else
+		return $data;
 }
 
 function status ($ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get status from server						//:SVK: Ziska status serveru
