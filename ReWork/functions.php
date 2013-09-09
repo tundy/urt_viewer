@@ -13,9 +13,11 @@ function removespace ($result)													## Remove spaces between ""						//:S
 
 function stripcolors ($result)
 {
-	$result = preg_replace ("/(\^.)/", "</font>$1", $result);					## add </font> before new color					//:SVK: prida ukoncenie farebneho textu
+	$result = str_replace ("^<", "<font style='color:white'>", $result);		## change ^< to white							//:SVK: Biela Farba
+	$result = str_replace ("^>", "<font style='color:white'>", $result);		## change ^> to white							//:SVK: Biela Farba
 	$result = str_replace ("<", "&lt;", $result);								## convert < into &lt; for proper display		//:SVK: Zmeni to na specialny HTML znak
 	$result = str_replace (">", "&gt;", $result);								## convert > into &gt; for proper display		//:SVK: Zmeni to na specialny HTML znak
+	$result = preg_replace ("/(\^.)/", "</font>$1", $result);					## add </font> before new color					//:SVK: prida ukoncenie farebneho textu
 
 	$result = str_replace ("^0", "<font style='color:black'>", $result);		## change ^0 to black							//:SVK: Cierna Farba
 	$result = str_replace ("^1", "<font style='color:red'>", $result);			## change ^1 to red								//:SVK: Cervena Farba
