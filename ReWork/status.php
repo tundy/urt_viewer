@@ -33,7 +33,7 @@ if ($DataFile) 									## Try to open DataFile
 		$ID++;															## Next players
 		}
 	unset($buffer);				## UnSet Buffer
-	$o_playerss = "$ID";		## Get number of plyers from last players ID
+	$o_players = $ID;		## Get number of plyers from last players ID
 	unset($ID);					## UnSet players ID, don't need it anymore
     if (!feof($DataFile)) 								## Unexpected End of File !!
 		$error = "Error: unexpected fgets() fail\n";	## set error msg
@@ -44,7 +44,7 @@ if ($DataFile) 									## Try to open DataFile
 else
 	$error = "Error: fopen() failed to open stream.\n";		## Failed to load FileData
 
-if ( strpos($status, "statusResponse" ) == false)	## Is server online ?
+if ( preg_match("/....statusResponse.*/", $status) == false)	## Is server online ?
 	$error = "Error: no status response.\n";		## Server is offline !
 else
 	unset($status);									## Server is online !
@@ -57,7 +57,7 @@ $cvars = (substr_count("$f_cvars","\\"));	## Get number of Cvars
 unset($f_cvars);							## Unset $f_cvars
 
 ### Start ### Chagning $cvar[] to $cvar["KEY"] alphabetically
-if ($error == 0)								## Do it only if is everything OK
+if ( empty($error) )								## Do it only if is everything OK
 {
 	$i = 1;
 	while ($i < $cvars):						## new $cvar's "KEY" is equal to old $cvar[$i]
@@ -72,7 +72,7 @@ if ($error == 0)								## Do it only if is everything OK
 }
 ### End ### Chagning $cvar[] to $cvar["KEY"] alphabetically
 
-if ($error == 0)										## Do it only if is everything OK
+if ( empty($error) )										## Do it only if is everything OK
 {
 	if (isset($cvar["sv_hostname"]))					## Exist this variable ?
 	{
@@ -145,10 +145,10 @@ if ($error == 0)										## Do it only if is everything OK
 	else
 		$mapimage = "no.png";	
 	unset($dir);
-	$slots = $o_playerss . " / " . ($cvar["sv_maxclients"]-$cvar["sv_privateClients"]) . " + " . $cvar["sv_privateClients"];
+	$slots = $o_players . " / " . ($cvar["sv_maxclients"]-$cvar["sv_privateClients"]) . " + " . $cvar["sv_privateClients"];
 }
 
-if ($error != 0)
+if ( !empty($error) )
 	{
 	$sv_hostname = "<span style='font-size:16px ;color:red'>OFFLINE</span>";
 	$cvar["g_modversion"] = " ";
