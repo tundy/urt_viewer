@@ -48,10 +48,7 @@ function cmd ($cmd, $ip, $port = 27960)											## Send command to the server	
 		$data .= $d;
 	fclose ($server);
 	if ( empty($data) )
-	{
-		echo("No answer from [ $ip : $port ] !! \r\n");
 		return "No answer from server !!";
-	}
 	else
 		return $data;
 }
@@ -70,6 +67,9 @@ function status ($ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get s
 		fwrite($df, $status);
 		fclose($df);
 	}
+	
+	include("status.php");
+	include("banner.php");
 }
 
 function lastcheck ($ip, $port = 27960)														## Find date/time for last refresh				//:SVK: Zisti cas posledneho statusu
