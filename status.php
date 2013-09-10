@@ -19,11 +19,11 @@ if ($DataFile) 									## Try to open DataFile
 		,$players[$ID]["Ping"]
 		,$players[$ID]["Nick"]
 		);
-		$players[$ID]["Nick"] = stripcolors ($players[$ID]["Nick"]);	## Add colors to nicks
-		$players[$ID]["Nick"] .= "</font>";								## Color end in nick
-		if ($players[$ID]["Ping"] == 0)									## Change ping 0 to BOT string
+		$players[$ID]["Nick"] = stripcolors ($players[$ID]["Nick"]);								## Add colors to nicks
+		$players[$ID]["Nick"] = "<font style='color:white'>".$players[$ID]["Nick"]."</font>";		## Default color
+		if ($players[$ID]["Ping"] == 0)																## Change ping 0 to BOT string
 			$players[$ID]["Ping"] = "BOT";								
-		$ID++;															## Next players
+		$ID++;																						## Next players
 		}
 	unset($buffer);				## UnSet Buffer
 	$o_players = $ID;			## Get number of players from last players ID
@@ -54,7 +54,7 @@ if ( empty($error) )								## Do it only if is everything OK
 {
 	$i = 1;
 	while ($i < $cvars):						## new $cvar's "KEY" is equal to old $cvar[$i]
-		$cvar["$cvar[$i]"] = $cvar[$i + 1];		## new $cvar["KEY"]'s VALUE is equal to old $cvar[$i+1]
+		$cvar["$cvar[$i]"] = trim($cvar[$i + 1]);		## new $cvar["KEY"]'s VALUE is equal to old $cvar[$i+1]
 		unset($cvar[$i]);						## After setting new KEY old one will be unset
 		unset($cvar[$i + 1]);					## After setting new VALUE old one will be unset
 		$i += 2;
