@@ -21,6 +21,9 @@ if ($DataFile) 									## Try to open DataFile
 		);
 		$players[$ID]["Nick"] = stripcolors ($players[$ID]["Nick"]);								## Add colors to nicks
 		$players[$ID]["Nick"] = "<font style='color:white'>".$players[$ID]["Nick"]."</font>";		## Default color
+		$pattern = "/<font[^>]*><\\/font[^>]*>/"; 													## Grep for empty <font> tags
+		$players[$ID]["Nick"] = preg_replace($pattern, '', $players[$ID]["Nick"]); 					## Remove empty <font> tags
+		unset($pattern);
 		if ($players[$ID]["Ping"] == 0)																## Change ping 0 to BOT string
 			$players[$ID]["Ping"] = "BOT";								
 		$ID++;																						## Next players
@@ -69,7 +72,10 @@ if ( empty($error) )										## Do it only if is everything OK
 {
 	if (isset($cvar["sv_hostname"]))					## Exist this variable ?
 	{
-		$cvar["sv_hostname"] = $cvar["sv_hostname"] . "</font>";				
+		$cvar["sv_hostname"] = "<font style='color:white'>" . $cvar["sv_hostname"] . "</font>";	
+		$pattern = "/<font[^>]*><\\/font[^>]*>/"; 									## Grep for empty <font> tags
+		$cvar["sv_hostname"] = preg_replace($pattern, '', $cvar["sv_hostname"]); 	## Remove empty <font> tags
+		unset($pattern);	
 		$sv_hostname = "<span style='font-size:13px'>" . $cvar["sv_hostname"] . "</span>";
 	}
 	if (isset($cvar["g_modversion"]))					## 4.1 and 4.1.1 servers behave same
