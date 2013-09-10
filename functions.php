@@ -70,7 +70,7 @@ function status ($type, $ip, $port = 27960, $minutes = 2, $seconds = 30)							#
 		fclose($df);
 	}
 	
-	include("status.php");
+	require("status.php");
 	if ($type == 1)
 		include("banner.php");
 	elseif ($type == 2)
