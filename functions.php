@@ -55,7 +55,7 @@ function cmd ($cmd, $ip, $port = 27960)											## Send command to the server	
 		return $data;
 }
 
-function status ($ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get status from server						//:SVK: Ziska status serveru
+function status ($type, $ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get status from server						//:SVK: Ziska status serveru
 {
 	$Data = 0;
 	$DataFile = $ip . "%" . $port . ".data";												// 127.0.0.1%27960.data
@@ -71,7 +71,15 @@ function status ($ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get s
 	}
 	
 	include("status.php");
-	include("banner.php");
+	if ($type == 1)
+		include("banner.php");
+	elseif ($type == 2)
+	{
+		include("banner.php");
+		include("fullstatus.php");
+	}
+	else
+		include("fullstatus.php");
 }
 
 function lastcheck ($ip, $port = 27960)														## Find date/time for last refresh				//:SVK: Zisti cas posledneho statusu

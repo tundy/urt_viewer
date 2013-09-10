@@ -1,15 +1,6 @@
 <?php
-$PLAYER = array 	## Define Player Array Keys
-(
-	0 => "Score",
-	1 => "Ping",
-	2 => "Nick",
-);
-	
-status($ip, $port);			## Get fresh Status
-	
-$error = "0";				## set no errors
-$player = array();			## Clear $player
+$error = 0;				## set no errors
+$players = array();			## Clear $players
 
 $DataFile = @fopen("$ip%$port.data", "r");		## Open Data File with last updated server's infos
 if ($DataFile) 									## Try to open DataFile
@@ -17,37 +8,37 @@ if ($DataFile) 									## Try to open DataFile
 	$status = fgets($DataFile);					## Get First Line from file		// Is server online ?
 	$f_cvars = fgets($DataFile);				## Get Second Line from file	// Server cvars
 	
-	$ID = 0;											## Player ID
+	$ID = 0;											## players ID
 	while (($buffer = fgets($DataFile)) !== false)		## Get all other lines
 		{
-		$buffer = removespace ($buffer);				## Remove Spaces from Player's name
+		$buffer = removespace ($buffer);				## Remove Spaces from players's name
 		sscanf
 		(
 		$buffer,"%d %d %s"				## Get 2 numbers and 1 string
-		,$player[$ID][$PLAYER[0]]		## Score
-		,$player[$ID][$PLAYER[1]]		## Ping
-		,$player[$ID][$PLAYER[2]]		## NickName
+		,$players[$ID]["Score"]
+		,$players[$ID]["Ping"]
+		,$players[$ID]["Nick"]
 		);
-		$player[$ID]["Nick"] = stripcolors ($player[$ID]["Nick"]);		## Add colors to nicks
-		$player[$ID]["Nick"] .= "</font>";								## Color end in nick
-		if ($player[$ID]["Ping"] == 0)									## Change ping 0 to BOT string
-			$player[$ID]["Ping"] = "BOT";								
-		$ID++;															## Next Player
+		$players[$ID]["Nick"] = stripcolors ($players[$ID]["Nick"]);	## Add colors to nicks
+		$players[$ID]["Nick"] .= "</font>";								## Color end in nick
+		if ($players[$ID]["Ping"] == 0)									## Change ping 0 to BOT string
+			$players[$ID]["Ping"] = "BOT";								
+		$ID++;															## Next players
 		}
-	unset($buffer);			## UnSet Buffer
-	$o_players = "$ID";		## Get number of plyers from last player ID
-	unset($ID);				## UnSet player ID, don't need it anymore
+	unset($buffer);				## UnSet Buffer
+	$o_players = $ID;			## Get number of players from last players ID
+	unset($ID);					## UnSet players ID, don't need it anymore
     if (!feof($DataFile)) 								## Unexpected End of File !!
-		$error = "Error: unexpected fgets() fail\n";	## set error msg
-    fclose($DataFile);		## Close DataFile
-	unset($DataFile);		## UnSet DataFile
-	rsort($player);			## Sort an array in reverse order (highest to lowest) by Score
+		$error = "Error: unexpected end of datafile\r\n";	## set error msg
+    fclose($DataFile);			## Close DataFile
+	unset($DataFile);			## UnSet DataFile
+	rsort($players);			## Sort an array in reverse order (highest to lowest) by Score
 	} 
 else
-	$error = "Error: fopen() failed to open stream.\n";		## Failed to load FileData
+	$error = "Error: failed to open datafile.\r\n";		## Failed to load FileData
 
-if ( strpos($status, "statusResponse" ) == false)	## Is server online ?
-	$error = "Error: no status response.\n";		## Server is offline !
+if ( preg_match("/....statusResponse.*/", $status) == false)	## Is server online ?
+	$error = "Error: no status response.\r\n";		## Server is offline !
 else
 	unset($status);									## Server is online !
 
@@ -59,7 +50,7 @@ $cvars = (substr_count("$f_cvars","\\"));	## Get number of Cvars
 unset($f_cvars);							## Unset $f_cvars
 
 ### Start ### Chagning $cvar[] to $cvar["KEY"] alphabetically
-if ($error == "0")								## Do it only if is everything OK
+if ( empty($error) )								## Do it only if is everything OK
 {
 	$i = 1;
 	while ($i < $cvars):						## new $cvar's "KEY" is equal to old $cvar[$i]
@@ -74,7 +65,7 @@ if ($error == "0")								## Do it only if is everything OK
 }
 ### End ### Chagning $cvar[] to $cvar["KEY"] alphabetically
 
-if ($error == "0")										## Do it only if is everything OK
+if ( empty($error) )										## Do it only if is everything OK
 {
 	if (isset($cvar["sv_hostname"]))					## Exist this variable ?
 	{
@@ -132,36 +123,24 @@ if ($error == "0")										## Do it only if is everything OK
 			$cvar["g_needpass"] = "private";
 	}
 
-	$dir = 'levelshots';								## Directory with LevelShots
-	if (false == ($images = scandir($dir)))				## Try to Scan LevelShots
-		$error  = "Error: Failed to scandir($dir).";	## Scan Failed
+	$dir = 'levelshots';								## Directory with LevelShots	
+	if ( file_exists($dir . "/" . $cvar["mapname"] . ".png") )
+		$mapimage = $cvar["mapname"] . ".png";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".jpg") )
+		$mapimage = $cvar["mapname"] . ".jpg";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".gif") )
+		$mapimage = $cvar["mapname"] . ".gif";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".bmp") )
+		$mapimage = $cvar["mapname"] . ".bmp";
+	elseif ( file_exists($dir . "/" . $cvar["mapname"] . ".tga") )
+		$mapimage = $cvar["mapname"] . ".tga";
 	else
-		{
-		$mapimage = "no.png";							## If there will be no match image will be no.png
-			foreach ($images as $image) {				## Check Every File in Folder
-				switch ($image):
-					case $cvar["mapname"] . ".tga":
-						$mapimage = $cvar["mapname"] . ".tga";	break;
-					case $cvar["mapname"] . ".bmp":
-						$mapimage = $cvar["mapname"] . ".bmp";	break;
-					case $cvar["mapname"] . ".gif":
-						$mapimage = $cvar["mapname"] . ".gif";	break;
-					case $cvar["mapname"] . ".jpg":
-						$mapimage = $cvar["mapname"] . ".jpg";	break;
-					case $cvar["mapname"] . ".png":
-						$mapimage = $cvar["mapname"] . ".png";	break 1;	## If png found break foreach !
-					default:
-					break;
-				endswitch;
-			}
-		unset($images);
-		unset($image);
-		}
+		$mapimage = "no.png";	
 	unset($dir);
 	$slots = $o_players . " / " . ($cvar["sv_maxclients"]-$cvar["sv_privateClients"]) . " + " . $cvar["sv_privateClients"];
 }
 
-if ($error !== "0")
+if ( !empty($error) )
 	{
 	$sv_hostname = "<span style='font-size:16px ;color:red'>OFFLINE</span>";
 	$cvar["g_modversion"] = " ";

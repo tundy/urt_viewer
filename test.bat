@@ -1,0 +1,1 @@
+php test.php > test.html & "C:\Program Files (x86)\Mozilla Firefox\firefox" test.html

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 $GEAR = array  	## Define Gear Array Keys
 (
@@ -44,7 +44,7 @@ $VOTE = array   	## Define Vote Array Keys
 	29 => "cyclemap",
 );
 
-if ($error == "0")																## Do it only if is everything OK
+if ( empty($error) )																## Do it only if is everything OK
 {
 	### Calculating Gear ###
 	$gear_test = $cvar["g_gear"];
@@ -66,8 +66,8 @@ if ($error == "0")																## Do it only if is everything OK
 	unset($i);
 	unset($vote_test);
 	
-	### OutPut ### □ ● ○ ■
-	echo "<table width='160' cellpadding='1' cellspacing='0' class='statusbanner' border='0'>";
+	### OutPut ###
+	echo "<table width='160' cellpadding='1' cellspacing='0' class='statusbanner' border='0'> \r\n";
 	foreach (array_keys($cvar) as $key)
 	{
 		switch ($key):
@@ -76,14 +76,14 @@ if ($error == "0")																## Do it only if is everything OK
 			echo $key;
 			echo "</th><td>";
 			echo $cvar[$key];
-			echo "</td></tr>";
+			echo "</td></tr> \r\n";
 			
 			foreach (array_keys($gear) as $key)
 			{
 				echo "<tr><td colspan='2'>";
-				echo ($gear[$key] == "disabled" ? "&nbsp ○ &nbsp" : "&nbsp ● &nbsp");
+				echo ($gear[$key] == "disabled" ? "&nbsp - &nbsp" : "&nbsp + &nbsp");
 				echo $key;
-				echo "</td></tr>";
+				echo "</td></tr> \r\n";
 			}
 			break;
 		case "g_allowvote":
@@ -91,13 +91,13 @@ if ($error == "0")																## Do it only if is everything OK
 			echo $key;
 			echo "</th><td>";
 			echo $cvar[$key];
-			echo "</td></tr>";
+			echo "</td></tr> \r\n";
 			foreach (array_keys($vote) as $key)
 			{
 				echo "<tr><td colspan='2'>";
-				echo ($vote[$key] == "disabled" ? "&nbsp ○ &nbsp" : "&nbsp ● &nbsp");
+				echo ($vote[$key] == "disabled" ? "&nbsp - &nbsp" : "&nbsp + &nbsp");
 				echo $key;
-				echo "</td></tr>";
+				echo "</td></tr> \r\n";
 			}
 			break;
 		default:
@@ -105,11 +105,11 @@ if ($error == "0")																## Do it only if is everything OK
 			echo $key;
 			echo "</th><td>";
 			echo $cvar[$key];
-			echo "</td></tr>";
+			echo "</td></tr> \r\n";
 			break;
 	endswitch;
 	}	
 	unset($key);
-	echo "</table>";
+	echo "</table> \r\n";
 }
 ?>
