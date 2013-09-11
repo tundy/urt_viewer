@@ -6,7 +6,13 @@ $DataFile = @fopen("$ip%$port.data", "r");		## Open Data File with last updated 
 if ($DataFile) 									## Try to open DataFile
 	{
 	$status = fgets($DataFile);					## Get First Line from file		// Is server online ?
-	$f_cvars = fgets($DataFile);				## Get Second Line from file	// Server cvars
+	
+	if ( preg_match("/....statusResponse.*/", $status) == false)	## Is server online ?
+		$error = "Error: no status response.\r\n";					## No
+	else
+		unset($status);												## Yes
+
+	$f_cvars = fgets($DataFile);									## Get Second Line from file	// Server cvars
 	
 	$ID = 0;											## players ID
 	while (($buffer = fgets($DataFile)) !== false)		## Get all other lines
@@ -39,11 +45,6 @@ if ($DataFile) 									## Try to open DataFile
 	} 
 else
 	$error = "Error: failed to open datafile.\r\n";		## Failed to load FileData
-
-if ( preg_match("/....statusResponse.*/", $status) == false)	## Is server online ?
-	$error = "Error: no status response.\r\n";		## Server is offline !
-else
-	unset($status);									## Server is online !
 
 $cvar = explode('\\', $f_cvars);			## Split Cvars to 1 array
 unset($cvar[0]);							## First Value in Array is null
@@ -88,25 +89,25 @@ if ( empty($error) )										## Do it only if is everything OK
 		$g_gametype = $cvar["g_gametype"];
 		switch ($g_gametype):
 			case "0":
-				$g_gametype = "FFA [0] Free For All"; break;
+				$g_gametype = "FFA [0]"/* Free For All"*/; break;
 			case "1":
-				$g_gametype = "LMS [1] Last Man Standing"; break;
+				$g_gametype = "LMS [1]"/* Last Man Standing"*/; break;
 			case "3":
-				$g_gametype = "TDM [3] Team Death Match"; break;
+				$g_gametype = "TDM [3]"/* Team Death Match"*/; break;
 			case "4":
-				$g_gametype = "TS [4] Team Survivor"; break;
+				$g_gametype = "TS [4]"/* Team Survivor"*/; break;
 			case "5":
-				$g_gametype = "FTL [5] Follow The Leader"; break;
+				$g_gametype = "FTL [5]"/* Follow The Leader"*/; break;
 			case "6":
-				$g_gametype = "CaH [6] Capture and Hold"; break;
+				$g_gametype = "CaH [6]"/* Capture and Hold"*/; break;
 			case "7":
-				$g_gametype = "CTF [7] Capture The Flag"; break;
+				$g_gametype = "CTF [7]"/* Capture The Flag"*/; break;
 			case "8":
-				$g_gametype = "Bomb [8] Bomb Mode"; break;
+				$g_gametype = "Bomb [8]"/* Bomb Mode"*/; break;
 			case "9":
-				$g_gametype = "Jump [9] Jump Mode"; break;
+				$g_gametype = "Jump [9]"/* Jump Mode"*/; break;
 			default:
-				$g_gametype = "??? [" . $cvar[$i] . "] Unknown"; break;
+				$g_gametype = "??? [" . $cvar[$i] . "]"/* Unknown"*/; break;
 			endswitch;
 	}
 	if (isset($cvar["gamename"]))						## set game icon for banner from game/version
