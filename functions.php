@@ -43,7 +43,7 @@ function cmd ($cmd, $ip, $port = 27960)											## Send command to the server	
 	$server = fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
 	if (!$server)
 		die ("Unable to connect. Error $errno - $errstr\n");
-	socket_set_timeout ($server, 0, 500000);
+	socket_set_timeout ($server, 0, 125000);
 	fwrite ($server, $cmd);
 	$data = '';
 	while ($d = fread ($server, 10000))
