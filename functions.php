@@ -55,7 +55,7 @@ function cmd ($cmd, $ip, $port = 27960)											## Send command to the server	
 		return $data;
 }
 
-function status ($type, $ip, $port = 27960, $minutes = 2, $seconds = 30)							## Get status from server						//:SVK: Ziska status serveru
+function status ($type, $ip, $port = 27960, $minutes = 2, $seconds = 30)					## Get status from server						//:SVK: Ziska status serveru
 {
 	$Data = 0;
 	$DataFile = $ip . "%" . $port . ".data";												// 127.0.0.1%27960.data
@@ -69,7 +69,7 @@ function status ($type, $ip, $port = 27960, $minutes = 2, $seconds = 30)							#
 		fwrite($df, $status);
 		fclose($df);
 	}
-	
+
 	require("status.php");
 	if ($type == 1)
 		include("banner.php");
