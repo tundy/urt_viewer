@@ -38,7 +38,7 @@ function stripcolors ($result)
 function cmd ($cmd, $ip, $port = 27960)											## Send command to the server					//:SVK: Odosle prikaz na server
 {
 	$timeout = 1;
-	$cmd = chr(255).chr(255).chr(255).chr(255).$cmd;
+	$cmd = "\xFF\xFF\xFF\xFF".$cmd;
 	$errno = $errstr = null;
 	$server = fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
 	if (!$server)
