@@ -8,6 +8,7 @@ Main support for Urban Terror.
 
 EXAMPLE
 ===========
+<link rel="stylesheet" href="status.css"/>
 <table width='150' cellpadding='1' cellspacing='0' class='statusbanner' border='0'> 
 <tr><th><img align='left' src='game_icon/game_q3urt42.png' alt=q3urt42></th> 
 <th><center><a href="urt://37.157.196.35:27960" target="_blank" >PLAY NOW</a></center></th> 
