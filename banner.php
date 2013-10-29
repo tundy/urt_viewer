@@ -1,8 +1,11 @@
 <?php
 if ( !$server_country = geoip_country_code_by_name($ip) )
 	$server_country = "null";
-
-$server_country = strtolower($server_country);
+	$server_country_short = strtolower($server_country);
+	unset($server_country);
+if ( !$server_country_long = geoip_country_name_by_name($ip) )
+	$server_country_long = "Unknown";
+	
 $banner_width = 150;
 
 // Head Table
@@ -13,7 +16,7 @@ switch ( $cvar["gamename"] ):
 	case "q3urt42":
 		echo "<img align='left' src='game_icon/" . $gamename . "' alt=" . $cvar["gamename"] . ">" . "</th> \r\n";
 		echo "<th><center>" . "<a href=\"urt://" . gethostbyname("$ip") . ":$port\" target=\"_blank\" >PLAY NOW</a>" . "</center></th> \r\n";
-		echo "<th>" . "<img align='right' src='flags/" . $server_country . ".png' alt=" . $server_country . ">" . "</th></tr> \r\n";
+		echo "<th>" . "<img align='right' src='flags/" . $server_country_short . ".png' alt=" . $server_country_long . ">" . "</th></tr> \r\n";
 		echo "<tr><th colspan='3'>" . "<a href='http://www.urbanterror.info/servers/" . gethostbyname("$ip") . ":$port/' target='_blank'><center>$sv_hostname</center></a>";
 		break;
 	default:
