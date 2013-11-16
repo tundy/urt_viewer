@@ -81,7 +81,7 @@ if ( empty($error) )										## Do it only if is everything OK
 	}
 	if (isset($cvar["g_modversion"]))					## 4.1 and 4.1.1 servers behave same
 	{
-		if (strpos($cvar["g_modversion"], "4.1") !== false)
+		if (strpos($cvar["g_modversion"], "4.1") == true)
 			$cvar["g_modversion"] = "4.1 / 4.1.1";
 	}
 	if (isset($cvar["g_gametype"]))						## Change number to Human Readable text
